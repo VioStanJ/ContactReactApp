@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {Table,Button, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import axios from 'axios';
 import Modal from 'reactstrap/lib/Modal';
-import MyInput from './Input/Input.js';
+import MyInput from './components/Input/Input.js';
 
 class App extends Component {
   state = {
