@@ -1,9 +1,19 @@
 import React,{Component} from 'react';
-import {Table,Button} from 'reactstrap';
+import {Table,Button, ModalHeader, ModalBody, ModalFooter, FormGroup, Label} from 'reactstrap';
 import axios from 'axios';
+import Modal from 'reactstrap/lib/Modal';
+import Input from 'reactstrap/lib/Input';
 
 class App extends Component {
   state = {
+    contact : {
+      nom : '',
+      prenom : '',
+      datenais : '',
+      phone : '',
+      email : '',]
+      adress : ''
+    },
     contacts : [],
     newContactModal : false
   }
@@ -14,6 +24,10 @@ class App extends Component {
       console.log(response.data);
       this.setState({contacts : response.data});
     });
+  }
+
+  openContactModal = () =>{
+    this.setState({newContactModal:!this.state.newContactModal});
   }
 
   render() {
@@ -44,7 +58,36 @@ class App extends Component {
 
     return (
         <div className="App container">
-          <Button color="primary" className="mr-4" style={btnStyle}>Add Contact</Button>
+          <Button color="primary" className="mr-4" onClick={this.openContactModal.bind(this)} style={btnStyle}>Add Contact</Button>
+          <Modal isOpen={this.state.newContactModal}>
+              <ModalHeader>Create Contact</ModalHeader>
+              <ModalBody>
+                <FormGroup>
+                  <Input id="nom" placeholder="Nom"/>
+                </FormGroup>
+                <FormGroup>
+                  <Input id="prenom" placeholder="Prenom"/>
+                </FormGroup>
+                
+                <FormGroup>
+                  <Input id="phone" placeholder="Phone"/>
+                </FormGroup>
+                <FormGroup>
+                  <Input id="email" placeholder="E-mail" type="email"/>
+                </FormGroup>
+                <FormGroup>
+                  <Label  for="datenais">Date de Naissance</Label>
+                  <Input id="datenais" type="date"/>
+                </FormGroup>
+                <FormGroup>
+                  <Input id="adress" placeholder="Adresse"/>
+                </FormGroup>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="success" onClick={this.openContactModal.bind(this)}>Save</Button>
+                <Button color="primary" onClick={this.openContactModal.bind(this)}>Cancel</Button>
+              </ModalFooter>
+          </Modal>
           <Table>
             <thead>
               <tr>
