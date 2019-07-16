@@ -7,6 +7,10 @@ class Input extends React.Component{
     render() {
         return (
         <FormGroup>
+            {
+                this.props.children ?
+                <Label>{this.props.children}</Label>:null
+            }
             <InputB id={this.props.id} placeholder={this.props.hint} type={this.props.typ} 
                 value={this.props.val} onChange={this.props.change}/>
         </FormGroup>

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Table,Button, ModalHeader, ModalBody, ModalFooter, FormGroup, Label} from 'reactstrap';
+import {Table,Button, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import axios from 'axios';
 import Modal from 'reactstrap/lib/Modal';
 import MyInput from './Input/Input.js';
@@ -58,6 +58,7 @@ class App extends Component {
   }
 
   render() {
+
     let contacts = this.state.contacts.map((contact) => {
       return(
         <tr key={contact.id}>
@@ -107,7 +108,7 @@ class App extends Component {
                   change={(event) => this.handleValue(event,'adress')}/>
 
                 <MyInput typ="date" id="datenais" val={this.state.contact.date}
-                  change={(event) => this.handleValue(event,'date')}/>
+                  change={(event) => this.handleValue(event,'date')}>Date de Naissance</MyInput>
 
               </ModalBody>
               <ModalFooter>
