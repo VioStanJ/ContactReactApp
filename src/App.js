@@ -7,6 +7,7 @@ import MyInput from './components/Input/Input.js';
 class App extends Component {
   state = {
     contact : {
+      id:'',
       nom:'',
       prenom:'',
       phone:'',
@@ -29,18 +30,39 @@ class App extends Component {
     this.setState({newContactModal:!this.state.newContactModal});
   }
 
-  openEditContactModal(contact){
-    console.log(contact);
+  openEditContactModal(id,nm,pr,ph,ml,ad,dt){
+    const contact = {
+      id : id,
+      nom:nm,
+      prenom:pr,
+      phone:ph,
+      mail:ml,
+      adress:ad,
+      date:dt
+    }
     this.setState({editContactModal : !this.state.editContactModal,contact  : contact});
   }
 
   editContact(contact){
-    console.log(contact);
+    axios.put('http://localhost/www/CloudContact/api/v1/contacts/edit/'+this.state.contact.id,this.state.contact).then(response => {
+      this.setState({
+        contact : {
+          nom:'',
+          prenom:'',
+          phone:'',
+          mail:'',
+          adress:'',
+          date:''
+        },
+        contacts : response.data,
+        newContactModal : false,
+        editContactModal : false
+      });
+    });
   }
 
   addContact() {
       axios.post('http://localhost/www/CloudContact/api/v1/contacts/add',this.state.contact).then(response => {
-        console.log(response);
         this.setState({
           contact : {
             nom:'',
@@ -84,7 +106,7 @@ class App extends Component {
           <td>{contact.adress}</td>
           <td>{contact.datenais}</td>
           <td>
-            <Button color="success" size="sm" className="mr-2" onClick={this.openEditContactModal.bind(this,contact)}>Edit</Button>
+            <Button color="success" size="sm" className="mr-2" onClick={this.openEditContactModal.bind(this,contact.id,contact.nom,contact.prenom,contact.phone,contact.email,contact.adress,contact.datenais)}>Edit</Button>
             <Button color="danger" size="sm" onClick={this.deleteContact.bind(this,index,contact.id)}>Delete</Button>
           </td>
         </tr>
@@ -104,7 +126,7 @@ class App extends Component {
           <Button color="primary" className="mr-4" onClick={this.openNewContactModal.bind(this)} style={btnStyle}>Add Contact</Button>
           {/* Save Modal */}
           <Modal isOpen={this.state.newContactModal}>
-              <ModalHeader>Edit Contact</ModalHeader>
+              <ModalHeader>Create Contact</ModalHeader>
               <ModalBody>
                 
                 <MyInput typ="text" hint="Nom" id="nom" val={this.state.contact.nom} 
@@ -135,7 +157,7 @@ class App extends Component {
 
           {/* Edit Modal */}
           <Modal isOpen={this.state.editContactModal}>
-              <ModalHeader>Create Contact</ModalHeader>
+              <ModalHeader>Edit Contact</ModalHeader>
               <ModalBody>
                 
                 <MyInput typ="text" hint="Nom" id="nom" val={this.state.contact.nom} 
@@ -158,8 +180,8 @@ class App extends Component {
 
               </ModalBody>
               <ModalFooter>
-                <Button color="success" onClick={this.addContact.bind(this)}>Save</Button>
-                <Button color="primary" onClick={this.openEditContactModal.bind(this)}>Cancel</Button>
+                <Button color="warning" onClick={this.editContact.bind(this)}>Edit</Button>
+                <Button color="primary" onClick={this.openEditContactModal.bind(this,'','','','','','','')}>Cancel</Button>
               </ModalFooter>
           </Modal>
           {/* End Edit Modal */}
