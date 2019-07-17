@@ -8,7 +8,7 @@ class App extends Component {
   state = {
     contact : {
       id:'',
-      nom:'',
+      nom:'sjkasjaksj',
       prenom:'',
       phone:'',
       mail:'',
