@@ -15,7 +15,8 @@ class App extends Component {
       date:''
     },
     contacts : [],
-    newContactModal : false
+    newContactModal : false,
+    editContactModal : false
   }
 
   componentDidMount() {
@@ -24,13 +25,17 @@ class App extends Component {
     });
   }
 
-  openContactModal = () =>{
+  openNewContactModal = () =>{
     this.setState({newContactModal:!this.state.newContactModal});
+  }
+
+  openEditContactModal(contact){
+    console.log(contact);
+    this.setState({editContactModal : !this.state.editContactModal,contact  : contact});
   }
 
   editContact(contact){
     console.log(contact);
-    
   }
 
   addContact() {
@@ -46,7 +51,8 @@ class App extends Component {
             date:''
           },
           contacts : response.data,
-          newContactModal : false
+          newContactModal : false,
+          editContactModal : false
         });
       });
   }
@@ -78,7 +84,7 @@ class App extends Component {
           <td>{contact.adress}</td>
           <td>{contact.datenais}</td>
           <td>
-            <Button color="success" size="sm" className="mr-2" onClick={this.editContact.bind(this,contact)}>Edit</Button>
+            <Button color="success" size="sm" className="mr-2" onClick={this.openEditContactModal.bind(this,contact)}>Edit</Button>
             <Button color="danger" size="sm" onClick={this.deleteContact.bind(this,index,contact.id)}>Delete</Button>
           </td>
         </tr>
@@ -95,8 +101,40 @@ class App extends Component {
     return (
         <div className="App container">
           <h1 className="text-center">Contact React</h1>
-          <Button color="primary" className="mr-4" onClick={this.openContactModal.bind(this)} style={btnStyle}>Add Contact</Button>
+          <Button color="primary" className="mr-4" onClick={this.openNewContactModal.bind(this)} style={btnStyle}>Add Contact</Button>
+          {/* Save Modal */}
           <Modal isOpen={this.state.newContactModal}>
+              <ModalHeader>Edit Contact</ModalHeader>
+              <ModalBody>
+                
+                <MyInput typ="text" hint="Nom" id="nom" val={this.state.contact.nom} 
+                  change={(event) => this.handleValue(event,'nom')}/>
+
+                <MyInput typ="text" hint="Prenom" id="prenom" val={this.state.contact.prenom} 
+                  change={(event) => this.handleValue(event,'prenom')}/>
+                  
+                <MyInput typ="number" hint="Phone" id="phone" val={this.state.contact.phone}
+                  change={(event) => this.handleValue(event,'phone')}/>
+
+                <MyInput typ="email" hint="E-mail" id="email" val={this.state.contact.mail}
+                  change={(event) => this.handleValue(event,'mail')}/>
+
+                <MyInput typ="text" hint="Adress" id="adress" val={this.state.contact.adress}
+                  change={(event) => this.handleValue(event,'adress')}/>
+
+                <MyInput typ="date" id="datenais" val={this.state.contact.date}
+                  change={(event) => this.handleValue(event,'date')}>Date de Naissance</MyInput>
+
+              </ModalBody>
+              <ModalFooter>
+                <Button color="success" onClick={this.addContact.bind(this)}>Save</Button>
+                <Button color="primary" onClick={this.openNewContactModal.bind(this)}>Cancel</Button>
+              </ModalFooter>
+          </Modal>
+          {/* End Save Modal */}
+
+          {/* Edit Modal */}
+          <Modal isOpen={this.state.editContactModal}>
               <ModalHeader>Create Contact</ModalHeader>
               <ModalBody>
                 
@@ -121,9 +159,10 @@ class App extends Component {
               </ModalBody>
               <ModalFooter>
                 <Button color="success" onClick={this.addContact.bind(this)}>Save</Button>
-                <Button color="primary" onClick={this.openContactModal.bind(this)}>Cancel</Button>
+                <Button color="primary" onClick={this.openEditContactModal.bind(this)}>Cancel</Button>
               </ModalFooter>
           </Modal>
+          {/* End Edit Modal */}
           <Table>
             <thead>
               <tr>
