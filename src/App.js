@@ -51,6 +51,14 @@ class App extends Component {
       });
   }
 
+  deleteContact(index,id){
+    axios.delete('http://localhost/www/CloudContact/api/v1/contacts/delete/'+id).then(response =>{      
+      const contacts = [...this.state.contacts];
+      contacts.splice(index,1);
+      this.setState({contacts:contacts});
+    });
+  }
+
   handleValue(event,id){
     let newState = {...this.state.contact};
     newState[id] = event.target.value;
@@ -59,7 +67,7 @@ class App extends Component {
 
   render() {
 
-    let contacts = this.state.contacts.map((contact) => {
+    let contacts = this.state.contacts.map((contact,index) => {
       return(
         <tr key={contact.id}>
           <td>{contact.id}</td>
@@ -71,7 +79,7 @@ class App extends Component {
           <td>{contact.datenais}</td>
           <td>
             <Button color="success" size="sm" className="mr-2" onClick={this.editContact.bind(this,contact)}>Edit</Button>
-            <Button color="danger" size="sm">Delete</Button>
+            <Button color="danger" size="sm" onClick={this.deleteContact.bind(this,index,contact.id)}>Delete</Button>
           </td>
         </tr>
       );
