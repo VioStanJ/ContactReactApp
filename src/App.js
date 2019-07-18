@@ -21,7 +21,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost/www/CloudContact/api/v1/contacts').then((response) =>{
+    axios.get('/v1/contacts').then((response) =>{
       this.setState({contacts : response.data});
     });
   }
@@ -44,7 +44,7 @@ class App extends Component {
   }
 
   editContact(contact){
-    axios.put('http://localhost/www/CloudContact/api/v1/contacts/edit/'+this.state.contact.id,this.state.contact).then(response => {
+    axios.put('/v1/contacts/edit/'+this.state.contact.id,this.state.contact).then(response => {
       this.setState({
         contact : {
           nom:'',
@@ -62,7 +62,7 @@ class App extends Component {
   }
 
   addContact() {
-      axios.post('http://localhost/www/CloudContact/api/v1/contacts/add',this.state.contact).then(response => {
+      axios.post('/v1/contacts/add',this.state.contact).then(response => {
         this.setState({
           contact : {
             nom:'',
@@ -80,7 +80,7 @@ class App extends Component {
   }
 
   deleteContact(index,id){
-    axios.delete('http://localhost/www/CloudContact/api/v1/contacts/delete/'+id).then(response =>{      
+    axios.delete('/v1/contacts/delete/'+id).then(response =>{      
       const contacts = [...this.state.contacts];
       contacts.splice(index,1);
       this.setState({contacts:contacts});
